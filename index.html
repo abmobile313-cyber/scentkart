@@ -4,247 +4,322 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ScentKart</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="ScentKart – everyday perfumes and attars. Fragrance to the soul.">
+<meta name="description" content="ScentKart – everyday perfumes and attars. Order online, pay securely, track your parcel.">
+<meta name="theme-color" content="#0b100c">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: blurred "vanity shelf" backdrop with frosted-glass panels floating over it (scent finder + product shelf), then one dark band for the brand promise. */
+/* One committed look: deep forest night, frosted glass, lime-leaf light. Everything has depth. */
 :root{
-  --bg:#e9ebe6; --bg2:#dfe3db; --ink:#16181a; --muted:#5d625c;
-  --glass:rgba(255,255,255,.55); --glass-line:rgba(255,255,255,.75); --shadow:rgba(30,40,25,.14);
-  --leaf:#9bd36a; --leaf-ink:#24410e; --dark:#0f1110; --dark-ink:#eef1ea; --dark-muted:#8f978c;
-  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#141714; --bg2:#1b1f1b; --ink:#eef1ea; --muted:#a2a99f;
-  --glass:rgba(40,46,40,.55); --glass-line:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.45);
-  --leaf:#a6dc76; --leaf-ink:#16290a; --dark:#090a09; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#141714; --bg2:#1b1f1b; --ink:#eef1ea; --muted:#a2a99f;
-  --glass:rgba(40,46,40,.55); --glass-line:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.45);
-  --leaf:#a6dc76; --leaf-ink:#16290a; --dark:#090a09; color-scheme:dark}
-*{box-sizing:border-box}
+  --bg:#0b100c;--bg2:#121a14;--ink:#eef3ea;--muted:#9aa696;--line:rgba(255,255,255,.1);
+  --glass:rgba(28,38,30,.55);--glass-hi:rgba(255,255,255,.14);
+  --leaf:#b4ec7c;--leaf-deep:#5f9a2f;--leaf-ink:#132408;--gold:#e9c87a;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --shp-accent:#b4ec7c;--shp-accent-ink:#132408;--shp-bg:#0e1510;--shp-ink:#eef3ea;--shp-card:#16201a;--shp-line:rgba(255,255,255,.1);--shp-muted:#9aa696;
+  color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);overflow-x:hidden}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.02em}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--bg)}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
 a{color:inherit}
-.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-family:var(--display);line-height:1.02;margin:0;text-wrap:balance;letter-spacing:-.025em}
+.eyebrow{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 
-/* backdrop: soft blurred blobs like a shelf seen out of focus */
-.scene{position:relative;isolation:isolate;overflow:hidden}
-.scene::before,.scene::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.75}
-.scene::before{width:42vw;height:42vw;left:-8vw;top:8vh;background:var(--bg2)}
-.scene::after{width:30vw;height:30vw;right:4vw;top:22vh;background:var(--leaf);opacity:.35}
-.glass{background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);box-shadow:0 30px 60px -30px var(--shadow);border-radius:26px}
+/* 3D type: stacked extrusion + soft cast shadow */
+.t3d{color:var(--ink);text-shadow:0 1px 0 #c9d3c4,0 2px 0 #b3bead,0 3px 0 #9da996,0 4px 0 #87947f,0 5px 0 #6f7c68,0 6px 1px rgba(0,0,0,.25),0 10px 18px rgba(0,0,0,.55),0 22px 40px rgba(0,0,0,.45)}
+.t3d-leaf{color:var(--leaf);text-shadow:0 1px 0 #9fd86a,0 2px 0 #8ac458,0 3px 0 #76b046,0 4px 0 #629b35,0 5px 0 #4e8526,0 6px 1px rgba(0,0,0,.3),0 12px 24px rgba(0,0,0,.6),0 0 40px rgba(180,236,124,.25)}
+.t3d-sm{text-shadow:0 1px 0 #b3bead,0 2px 0 #87947f,0 3px 1px rgba(0,0,0,.3),0 8px 14px rgba(0,0,0,.5)}
 
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;padding-block:14px}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 18px;border-radius:999px}
-.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.15rem;text-decoration:none}
-.logo i{width:30px;height:30px;border-radius:10px;background:var(--ink);display:grid;place-items:center}
-.logo i::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--leaf)}
-.nav nav{display:flex;gap:4px}
-.nav nav a{padding:8px 14px;border-radius:999px;text-decoration:none;font-size:.92rem;color:var(--muted)}
-.nav nav a:hover,.nav nav a:focus-visible{background:var(--glass-line);color:var(--ink);outline:none}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;font-size:.92rem;border:0;cursor:pointer}
-.btn .dot{width:8px;height:8px;border-radius:50%;background:var(--leaf)}
-.btn:focus-visible{outline:2px solid var(--leaf);outline-offset:3px}
+/* 3D buttons */
+.b3{--d:5px;--c:var(--leaf);--cd:#5f9a2f;--ci:var(--leaf-ink);position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 22px;border-radius:16px;border:0;cursor:pointer;
+  font:700 .95rem/1 var(--body);color:var(--ci);text-decoration:none;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 55%);
+  box-shadow:0 var(--d) 0 var(--cd),0 calc(var(--d) + 12px) 24px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 0 rgba(0,0,0,.12);
+  text-shadow:0 1px 0 rgba(255,255,255,.4);transition:transform .12s,box-shadow .12s;white-space:nowrap}
+.b3:hover{transform:translateY(-2px);box-shadow:0 calc(var(--d) + 2px) 0 var(--cd),0 calc(var(--d) + 18px) 28px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -2px 0 rgba(0,0,0,.12)}
+.b3:active{transform:translateY(var(--d));box-shadow:0 0 0 var(--cd),0 4px 10px -6px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.5)}
+.b3:focus-visible{outline:2px solid var(--leaf);outline-offset:5px}
+.b3.dark{--c:#1f2a22;--cd:#050806;--ci:var(--ink);background:linear-gradient(180deg,#2c3a30,#18211b);text-shadow:0 1px 0 rgba(0,0,0,.6);box-shadow:0 var(--d) 0 #050806,0 calc(var(--d) + 12px) 24px -8px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.14)}
+.b3.sm{padding:10px 15px;font-size:.85rem;--d:4px;border-radius:13px}
+.b3 .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.8}
+
+/* glass panels with an actual edge (thickness) */
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 40%),var(--glass);border:1px solid var(--line);border-radius:26px;
+  backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
+  box-shadow:inset 0 1px 0 var(--glass-hi),0 6px 0 -1px rgba(0,0,0,.35),0 40px 70px -35px rgba(0,0,0,.85)}
+
+/* ambient scene */
+.aura{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aura i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.aura i:nth-child(1){width:46vw;height:46vw;left:-12vw;top:-8vw;background:#1d3a20}
+.aura i:nth-child(2){width:34vw;height:34vw;right:-6vw;top:18vh;background:#2f5a1f;opacity:.35}
+.aura i:nth-child(3){width:40vw;height:40vw;left:30vw;bottom:-20vw;background:#3b2f14;opacity:.3}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding-block:12px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px 9px 16px;border-radius:22px}
+.logo{display:flex;align-items:center;gap:10px;font:800 1.2rem var(--display);text-decoration:none;letter-spacing:-.02em}
+.logo i{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(180deg,#2c3a30,#121914);box-shadow:0 3px 0 #050806,inset 0 1px 0 rgba(255,255,255,.15)}
+.logo i::after{content:"";width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#eaffd2,var(--leaf) 50%,var(--leaf-deep));box-shadow:0 0 12px var(--leaf)}
+.nav nav{display:flex;gap:2px}
+.nav nav a{padding:8px 13px;border-radius:12px;text-decoration:none;font-size:.9rem;color:var(--muted)}
+.nav nav a:hover,.nav nav a:focus-visible{background:rgba(255,255,255,.07);color:var(--ink);outline:none}
+.nav .acts{display:flex;gap:8px;align-items:center}
+.cartbtn{position:relative}
+.cartbtn .shp-badge{position:absolute;top:-8px;right:-8px;background:var(--gold);color:#241a05}
 
 /* hero */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-block:48px 70px}
-.hero h1{font-size:clamp(2.6rem,6.4vw,5.2rem)}
-.hero h1 span{color:var(--muted)}
-.hero p{max-width:44ch;color:var(--muted);font-size:1.08rem;margin:18px 0 26px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--glass-line);background:var(--glass);font-size:.82rem}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding-block:40px 60px;min-height:min(86vh,820px)}
+.hero h1{font-size:clamp(2.9rem,7.2vw,6rem);font-weight:800}
+.hero h1 .t3d-leaf{display:block}
+.hero .lede{max-width:46ch;color:var(--muted);font-size:1.1rem;margin:22px 0 26px}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:34px;font-size:.85rem;color:var(--muted)}
+.trust b{display:block;font:800 1.5rem var(--display);color:var(--ink)}
 
-/* the scent finder panel (signature element) */
-.finder{padding:14px;width:min(100%,380px);justify-self:center;transform:rotate(-1.5deg)}
-.finder-top{display:flex;align-items:center;gap:10px;padding:6px 6px 12px}
-.finder-top b{font-family:var(--display);font-size:1.05rem}
-.finder-top small{display:block;color:var(--muted);font-size:.72rem}
-.search{display:flex;align-items:center;gap:8px;margin:0 4px 10px;padding:9px 12px;border-radius:14px;background:var(--glass-line);color:var(--muted);font-size:.85rem}
-.fam{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border-radius:14px;border:0;background:none;color:var(--ink);font:inherit;font-size:.95rem;cursor:pointer;text-align:left}
-.fam em{margin-left:auto;font-style:normal;font-size:.75rem;color:var(--muted)}
-.fam .ic{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:var(--glass-line);font-size:.8rem}
-.fam:hover{background:var(--glass-line)}
-.fam[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.fam[aria-pressed="true"] em{color:var(--dark-muted)}
-.fam[aria-pressed="true"] .ic{background:var(--leaf);color:var(--leaf-ink)}
-.fam:focus-visible{outline:2px solid var(--leaf)}
-.note{margin:10px 4px 2px;padding:12px;border-radius:16px;background:var(--dark);color:var(--dark-ink);font-size:.85rem}
-.note b{font-family:var(--display);font-size:1.6rem;display:block;line-height:1.1}
-.note small{color:var(--dark-muted)}
+/* signature: a volumetric bottle built from stacked glass slices */
+.stage{position:relative;height:min(560px,70vw);min-height:380px;perspective:1100px;display:grid;place-items:center}
+.plinth{position:absolute;bottom:6%;width:62%;max-width:340px;aspect-ratio:3/1;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(180,236,124,.28),transparent),radial-gradient(closest-side,rgba(0,0,0,.6),transparent 80%);transform:rotateX(70deg)}
+.ring{position:absolute;bottom:4%;width:74%;max-width:400px;aspect-ratio:1;border-radius:50%;border:1px solid rgba(180,236,124,.25);transform:rotateX(78deg);box-shadow:0 0 30px rgba(180,236,124,.15) inset}
+.bottle3d{position:relative;width:min(190px,40vw);aspect-ratio:1/1.5;transform-style:preserve-3d;animation:spin 14s linear infinite;margin-bottom:8%}
+.stage:hover .bottle3d{animation-play-state:paused}
+@keyframes spin{from{transform:rotateX(-8deg) rotateY(0)}to{transform:rotateX(-8deg) rotateY(360deg)}}
+.slice{position:absolute;inset:0;border-radius:24% 24% 16% 16%/18% 18% 10% 10%;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.04) 30%,rgba(180,236,124,.55) 31%,rgba(95,154,47,.85));
+  border:1px solid rgba(220,255,190,.25)}
+.slice.face{background:linear-gradient(105deg,rgba(255,255,255,.55),rgba(255,255,255,.08) 28%,transparent 46%),linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.04) 30%,rgba(180,236,124,.6) 31%,rgba(70,120,30,.9));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 -20px 40px rgba(0,0,0,.25)}
+.label{position:absolute;left:16%;right:16%;top:46%;padding:10px 6px;border-radius:8px;text-align:center;background:linear-gradient(180deg,#f4f0e4,#d9d2bd);color:#16200f;
+  font:800 clamp(.7rem,2.2vw,.95rem)/1 var(--display);letter-spacing:.08em;box-shadow:0 2px 0 #a59e86,0 6px 10px rgba(0,0,0,.3)}
+.label small{display:block;font:600 .5rem var(--body);letter-spacing:.2em;margin-top:5px;opacity:.7}
+.neck{position:absolute;left:50%;top:-9%;width:26%;height:11%;transform:translateX(-50%);transform-style:preserve-3d}
+.cap{position:absolute;left:50%;top:-30%;width:42%;height:22%;transform:translateX(-50%);transform-style:preserve-3d}
+.cap i,.neck i{position:absolute;inset:0;border-radius:6px}
+.cap i{background:linear-gradient(90deg,#1b1408,#7a5a22 30%,#f1d58f 48%,#9b7330 62%,#2a1f0b)}
+.neck i{background:linear-gradient(90deg,#3d4a3f,#c7d4c3 45%,#4a574b)}
+.float{position:absolute;padding:10px 14px;border-radius:16px;font-size:.82rem;display:flex;gap:10px;align-items:center;animation:bob 6s ease-in-out infinite;z-index:2}
+.float b{font-family:var(--display);font-size:.95rem;display:block;line-height:1.1}
+.float small{color:var(--muted)}
+.float .sw{width:28px;height:28px;border-radius:9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 3px 0 rgba(0,0,0,.4)}
+.f1{left:0;top:16%}.f2{right:0;top:38%;animation-delay:-2s}.f3{left:6%;bottom:16%;animation-delay:-4s}
+@keyframes bob{50%{transform:translateY(-12px)}}
 
-/* shelf */
+/* families: 3D keycaps */
 section{padding-block:70px}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
-.sec-head h2{font-size:clamp(2rem,4vw,3rem)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.sec-head h2{font-size:clamp(2.1rem,4.6vw,3.6rem);font-weight:800}
 .sec-head p{max-width:42ch;color:var(--muted);margin:0}
-.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}
-.card{padding:16px;display:flex;flex-direction:column;gap:12px;transition:transform .25s ease}
-.card:hover{transform:translateY(-4px)}
-.bottle-box{aspect-ratio:4/5;max-width:100%;border-radius:18px;background:linear-gradient(160deg,var(--glass-line),transparent 60%),var(--bg2);display:grid;place-items:center;position:relative;overflow:hidden}
-.bottle-box img{width:100%;height:100%;object-fit:cover}
-.bottle{width:38%;aspect-ratio:1/1.55;border-radius:22% 22% 18% 18%/14% 14% 10% 10%;background:linear-gradient(115deg,rgba(255,255,255,.75),rgba(255,255,255,.15) 45%,var(--tint,#cfe7b5) 46%,var(--tint,#cfe7b5));box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 18px 30px -12px var(--shadow);position:relative;margin-top:14%}
-.bottle::before{content:"";position:absolute;left:50%;top:-22%;width:34%;height:20%;transform:translateX(-50%);border-radius:5px;background:var(--ink)}
-.card h3{font-size:1.15rem}
-.card p{margin:0;color:var(--muted);font-size:.88rem}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}
-.tag{font-size:.75rem;padding:4px 10px;border-radius:999px;background:var(--glass-line)}
-.ask{font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid currentColor}
-.empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted)}
+.fams{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:30px}
+.key{--d:5px;display:inline-flex;align-items:center;gap:10px;padding:11px 16px 11px 12px;border-radius:15px;border:1px solid var(--line);cursor:pointer;font:600 .92rem var(--body);color:var(--ink);
+  background:linear-gradient(180deg,#26322a,#18211b);box-shadow:0 var(--d) 0 #060907,0 14px 20px -12px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .12s,box-shadow .12s}
+.key .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--t,#3a4a3e);color:#122;font-size:.8rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 0 rgba(0,0,0,.35)}
+.key em{font-style:normal;font-size:.75rem;color:var(--muted);margin-left:4px}
+.key:hover{transform:translateY(-1px)}
+.key[aria-pressed="true"]{transform:translateY(3px);box-shadow:0 2px 0 #060907,0 6px 10px -6px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.12),0 0 0 2px var(--leaf) inset}
+.key:focus-visible{outline:2px solid var(--leaf);outline-offset:3px}
 
-/* dark promise band */
-.band{background:var(--dark);color:var(--dark-ink)}
-.band .eyebrow{color:var(--dark-muted)}
-.band h2{font-size:clamp(2.2rem,5vw,4rem);margin:12px 0 30px}
-.band h2 span{color:var(--dark-muted)}
-.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;border-top:1px solid #2a2e29;padding-top:28px}
-.promise b{font-family:var(--display);font-size:1.15rem;display:block;margin-bottom:6px}
-.promise p{margin:0;color:var(--dark-muted);font-size:.93rem}
+/* product cards: tilt in 3D, bottle lifts off the card */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px;perspective:1400px}
+.pc{position:relative;padding:14px;display:flex;flex-direction:column;gap:10px;transform-style:preserve-3d;transition:transform .4s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.pc .media{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:20px;overflow:hidden;transform:translateZ(40px);
+  background:radial-gradient(circle at 50% 75%,color-mix(in srgb,var(--t) 45%,transparent),transparent 60%),linear-gradient(170deg,#1c2820,#0d130f);box-shadow:inset 0 0 0 1px var(--line),0 18px 30px -18px rgba(0,0,0,.9)}
+.pc .media img{width:100%;height:100%;object-fit:cover}
+.mini{position:absolute;left:50%;bottom:16%;width:34%;aspect-ratio:1/1.5;transform:translateX(-50%);border-radius:24% 24% 16% 16%/18% 18% 10% 10%;
+  background:linear-gradient(105deg,rgba(255,255,255,.6),rgba(255,255,255,.08) 30%,transparent 48%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04) 30%,var(--t) 31%,color-mix(in srgb,var(--t) 60%,#000));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 26px 30px -14px rgba(0,0,0,.9)}
+.mini::before{content:"";position:absolute;left:50%;top:-26%;width:42%;height:20%;transform:translateX(-50%);border-radius:5px;background:linear-gradient(90deg,#1b1408,#c9a456 45%,#2a1f0b)}
+.mini::after{content:"";position:absolute;left:50%;bottom:-24%;width:150%;height:12%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent)}
+.pc .pill{position:absolute;top:24px;left:24px;transform:translateZ(60px);font-size:.72rem;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--gold);color:#241a05;box-shadow:0 3px 0 #8b6d2a}
+.pc h3{font-size:1.2rem;transform:translateZ(24px)}
+.pc p{margin:0;color:var(--muted);font-size:.88rem;transform:translateZ(14px)}
+.pc .meta{font-size:.78rem;color:var(--muted);letter-spacing:.04em}
+.pc .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;flex-wrap:wrap;transform:translateZ(30px)}
+.price{font:800 1.25rem var(--display);font-variant-numeric:tabular-nums}
+.price s{font:500 .82rem var(--body);color:var(--muted);margin-left:6px}
+.empty{grid-column:1/-1;padding:30px;text-align:center;color:var(--muted)}
 
-/* how to order */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.step{padding:22px}
-.step i{font-style:normal;font-family:var(--display);font-size:.8rem;color:var(--muted)}
-.step b{display:block;font-family:var(--display);font-size:1.2rem;margin:6px 0}
-.step p{margin:0;color:var(--muted);font-size:.93rem}
-.contact{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:22px 24px;margin-top:22px}
-.contact .num{font-family:var(--display);font-size:1.4rem;user-select:all}
-.copy{background:none;border:1px solid var(--muted);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:.85rem;cursor:pointer}
-footer{padding-block:34px;color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-footer .big{font-family:var(--display);font-weight:700;font-size:clamp(3rem,12vw,8rem);color:var(--ink);line-height:.9;letter-spacing:-.04em;width:100%}
+/* promise band */
+.band{position:relative}
+.band .glass{padding:clamp(24px,5vw,56px)}
+.band h2{font-size:clamp(2.2rem,5.4vw,4.4rem);font-weight:800;margin-bottom:34px}
+.promise{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.tile{padding:20px;border-radius:20px;background:linear-gradient(180deg,#1d2820,#121914);border:1px solid var(--line);box-shadow:0 6px 0 #060907,0 20px 30px -18px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.1)}
+.tile .ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:1.3rem;margin-bottom:12px;background:linear-gradient(180deg,#d6f7b5,var(--leaf));color:var(--leaf-ink);box-shadow:0 4px 0 var(--leaf-deep),inset 0 1px 0 #fff}
+.tile b{display:block;font:700 1.08rem var(--display);margin-bottom:6px}
+.tile p{margin:0;color:var(--muted);font-size:.9rem}
 
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.step{padding:22px;position:relative}
+.step::before{counter-increment:s;content:counter(s,decimal-leading-zero);font:800 2.6rem var(--display);color:var(--leaf);display:block;line-height:1;margin-bottom:10px;
+  text-shadow:0 1px 0 #8ac458,0 2px 0 #629b35,0 3px 0 #4e8526,0 8px 14px rgba(0,0,0,.6)}
+.step b{display:block;font:700 1.15rem var(--display);margin-bottom:6px}
+.step p{margin:0;color:var(--muted);font-size:.92rem}
+.track{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:22px 24px;margin-top:22px}
+.track b{font:700 1.25rem var(--display)}
+.track p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+
+.contact{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:24px}
+.contact .num{font:800 clamp(1.4rem,4vw,2rem) var(--display);user-select:all}
+.contact .btns{display:flex;gap:10px;flex-wrap:wrap}
+footer{padding-block:40px calc(110px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .big{width:100%;font:800 clamp(3.4rem,15vw,11rem)/.9 var(--display);letter-spacing:-.05em;color:#18221b;
+  text-shadow:0 1px 0 #223026,0 2px 0 #263429,0 3px 0 #2a392d,0 4px 0 #2e3e31,0 5px 0 #324335,0 18px 30px rgba(0,0,0,.6);-webkit-text-stroke:1px rgba(180,236,124,.18)}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px) rotateX(8deg);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:980px){.promise,.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:860px){
-  .hero{grid-template-columns:1fr;padding-block:24px 40px}
-  .finder{transform:none}
-  .promise,.steps{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr;min-height:0;padding-block:20px 30px}
+  .stage{order:-1;height:340px;min-height:0;margin-top:20px}.bottle3d{width:min(120px,30vw);margin-bottom:14%}.f1{top:8%}
   .nav nav{display:none}
+  .contact{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:520px){.promise,.steps{grid-template-columns:1fr}.nav .wa-txt{display:none}.f2{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+<div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
 
-
-<div class="scene">
 <header><div class="wrap"><div class="nav glass">
   <a class="logo" href="#top"><i></i>ScentKart</a>
-  <nav aria-label="Sections"><a href="#shelf">Shop</a><a href="#why">Why ScentKart</a><a href="#order">How to order</a></nav>
-  <a class="btn" href="https://wa.me/919272527913?text=Hi%20ScentKart%2C%20I%20want%20to%20order" target="_blank" rel="noopener"><span class="dot"></span>Order on WhatsApp</a>
+  <nav aria-label="Sections"><a href="#shop">Shop</a><a href="#why">Why us</a><a href="#how">How it works</a><a href="#" data-shop-orders>Track order</a></nav>
+  <div class="acts">
+    <a class="b3 dark sm" href="https://wa.me/919272527913?text=Hi%20ScentKart" target="_blank" rel="noopener" aria-label="WhatsApp"><span class="dot"></span><span class="wa-txt">WhatsApp</span></a>
+    <button class="b3 sm cartbtn" type="button" data-shop-cart aria-label="Cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>Cart<span class="shp-badge" data-shp-count hidden>0</span></button>
+  </div>
 </div></div></header>
 
 <main id="top">
 <div class="wrap hero">
   <div>
     <p class="eyebrow">ScentKart · Everyday fragrance</p>
-    <h1>Fragrance to the soul. <span>Every single day.</span></h1>
-    <p>Perfumes and attars made for daily wear: to the office, to the masjid, out with friends. Long-lasting and easy on the pocket.</p>
-    <div class="chips"><span class="chip">Perfumes</span><span class="chip">Attars</span><span class="chip">Daily wear</span></div>
-    <a class="btn" href="#shelf"><span class="dot"></span>Find your scent</a>
+    <h1><span class="t3d">Fragrance</span> <span class="t3d">to the soul.</span><span class="t3d-leaf">Every day.</span></h1>
+    <p class="lede">Perfumes and attars made for daily wear: to the office, to the masjid, out with friends. Long-lasting, easy on the pocket, delivered to your door.</p>
+    <div class="cta"><a class="b3" href="#shop"><span class="dot"></span>Shop fragrances</a><button class="b3 dark" type="button" data-shop-orders>Track my order</button></div>
+    <div class="trust"><span><b>UPI + Cards</b>Secure payment</span><span><b>1-tap</b>Order tracking</span><span><b>Pan-India</b>Delivery</span></div>
   </div>
-
-  <div class="finder glass" aria-label="Scent finder">
-    <div class="finder-top"><span class="logo"><i></i></span><div><b>Scent finder</b><small>Pick a mood, see the shelf</small></div></div>
-    <div class="search" aria-hidden="true">⌕ &nbsp;Search oud, musk, rose…</div>
-    <div id="fams"></div>
-    <div class="note"><b id="noteNum">25+</b><small id="noteTxt">fragrances on the shelf, perfumes and attars together</small></div>
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="ring"></div><div class="plinth"></div>
+    <div class="bottle3d" id="bottle"></div>
+    <div class="float glass f1"><span class="sw" style="background:linear-gradient(135deg,#f6e3a8,#c99a3c)"></span><div><b>Oud &amp; amber</b><small>Warm evenings</small></div></div>
+    <div class="float glass f2"><span class="sw" style="background:linear-gradient(135deg,#d7f6ff,#6fbcd0)"></span><div><b>Fresh aquatic</b><small>Hot commutes</small></div></div>
+    <div class="float glass f3"><span class="sw" style="background:linear-gradient(135deg,#fff,#d9cfe6)"></span><div><b>White musk</b><small>All-day soft</small></div></div>
   </div>
 </div>
 
-<section id="shelf"><div class="wrap">
-  <div class="sec-head">
-    <div><p class="eyebrow">The shelf</p><h2 id="shelfTitle">All fragrances</h2></div>
-    <p>Tap "Ask on WhatsApp" on any bottle. We reply with today's price, sizes and a quick sniff guide.</p>
+<section id="shop"><div class="wrap">
+  <div class="sec-head rv">
+    <div><p class="eyebrow">The shelf</p><h2 class="t3d" id="shelfTitle">All fragrances</h2></div>
+    <p>Add to cart, pay online securely, and follow your parcel right here. Prefer chatting? Every bottle can also be ordered on WhatsApp.</p>
   </div>
-  <div class="shelf" id="grid"></div>
+  <div class="fams" id="fams" role="group" aria-label="Fragrance family"></div>
+  <div class="shelf" id="grid"><p class="empty">Loading the shelf…</p></div>
+</div></section>
+
+<section class="band" id="why"><div class="wrap"><div class="glass rv">
+  <p class="eyebrow">Why ScentKart</p>
+  <h2><span class="t3d">Smell good daily.</span> <span class="t3d-leaf">Pay a fair price.</span></h2>
+  <div class="promise">
+    <div class="tile"><span class="ico">☀</span><b>Made for daily wear</b><p>Scents that last through a working day, not just the first hour.</p></div>
+    <div class="tile"><span class="ico">◈</span><b>Attar and perfume</b><p>Alcohol-free attars and fresh sprays, both on one shelf.</p></div>
+    <div class="tile"><span class="ico">🔒</span><b>Secure payment</b><p>UPI, cards and netbanking through Razorpay. Your details stay with the bank.</p></div>
+    <div class="tile"><span class="ico">📦</span><b>Live tracking</b><p>Every order gets a tracking link. See packed, shipped and delivered.</p></div>
+  </div>
+</div></div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sec-head rv"><div><p class="eyebrow">How it works</p><h2 class="t3d">Four taps to your door.</h2></div></div>
+  <div class="steps">
+    <div class="step glass rv"><b>Pick your scent</b><p>Choose a family, open a bottle, add it to your cart.</p></div>
+    <div class="step glass rv"><b>Add your address</b><p>Name, phone and delivery address. We remember it for next time.</p></div>
+    <div class="step glass rv"><b>Pay securely</b><p>UPI, card or netbanking. You get an order number at once.</p></div>
+    <div class="step glass rv"><b>Track the parcel</b><p>Tap "Track order" any time to see where it is.</p></div>
+  </div>
+  <div class="track glass rv"><div><b>Already ordered?</b><p>Your orders and tracking links are saved on this phone.</p></div><button class="b3" type="button" data-shop-orders>📦 My orders &amp; tracking</button></div>
+  <div class="contact glass rv" style="margin-top:22px">
+    <div><p class="eyebrow">WhatsApp &amp; calls</p><span class="num" id="num">+91 92725 27913</span><p style="margin:6px 0 0;color:var(--muted);font-size:.9rem">Email: <span style="user-select:all">scentkart@gmail.com</span></p></div>
+    <div class="btns"><button class="b3 dark" id="copyBtn" type="button">Copy number</button><a class="b3" href="https://wa.me/919272527913?text=Hi%20ScentKart" target="_blank" rel="noopener"><span class="dot"></span>Open WhatsApp</a></div>
+  </div>
 </div></section>
 </main>
-</div>
-
-<section class="band" id="why"><div class="wrap">
-  <p class="eyebrow">Why ScentKart</p>
-  <h2>Smell good daily. <span>Without the luxury price tag.</span></h2>
-  <div class="promise">
-    <div><b>Made for daily wear</b><p>Scents that sit close and last through a working day, not just the first hour.</p></div>
-    <div><b>Attar and perfume, both</b><p>Oil-based attars for those who prefer them, and sprays for a quick, fresh finish.</p></div>
-    <div><b>Order in one chat</b><p>No checkout forms. Message us, choose your bottle, and we take it from there.</p></div>
-  </div>
-</div></section>
-
-<section id="order"><div class="wrap">
-  <div class="sec-head"><div><p class="eyebrow">How to order</p><h2>Three messages, one parcel.</h2></div></div>
-  <div class="steps">
-    <div class="step glass"><i>Step 1</i><b>Say hi on WhatsApp</b><p>Tell us the scent or mood you like, or send a photo of a bottle you loved.</p></div>
-    <div class="step glass"><i>Step 2</i><b>Pick size and pay</b><p>We share today's prices, sizes and how to pay.</p></div>
-    <div class="step glass"><i>Step 3</i><b>It reaches your door</b><p>We pack it and send it to your address.</p></div>
-  </div>
-  <div class="contact glass">
-    <div><p class="eyebrow">WhatsApp &amp; calls</p><span class="num" id="num">+91 92725 27913</span></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="copy" id="copyBtn" type="button">Copy number</button>
-      <a class="btn" href="https://wa.me/919272527913?text=Hi%20ScentKart" target="_blank" rel="noopener"><span class="dot"></span>Open WhatsApp</a>
-    </div>
-  </div>
-  <p style="color:var(--muted);font-size:.9rem;margin-top:14px">Email: <span style="user-select:all">scentkart@gmail.com</span></p>
-</div></section>
 
 <div class="wrap"><footer>
-  <div class="big">ScentKart</div>
-  <span>Fragrance to the soul · scentkart.store</span><span>© <span id="yr"></span> ScentKart</span>
+  <div class="big" aria-hidden="true">ScentKart</div>
+  <span>Fragrance to the soul · scentkart.store</span><span>© <span id="yr"></span> ScentKart · <a href="#" data-shop-orders>Track order</a></span>
 </footer></div>
 
+<script src="https://quranicscience.info/shop-engine.js"></script>
 <script>
-/* ===== EDIT YOUR PRODUCTS HERE =====
-   name: bottle name · fam: one of the family ids below · type: "Perfume" or "Attar"
-   desc: one short line · img: photo file name (leave "" to show the drawn bottle) · price: "" shows "Ask price" */
-const FAMILIES=[
-  {id:"all",name:"All fragrances",ic:"✦"},
-  {id:"fresh",name:"Fresh & aquatic",ic:"≈",tint:"#bfe3e6"},
-  {id:"musk",name:"Soft musk",ic:"○",tint:"#ece6f2"},
-  {id:"oud",name:"Oud & woody",ic:"▲",tint:"#c9a27a"},
-  {id:"floral",name:"Rose & floral",ic:"❀",tint:"#f2c6cf"},
-  {id:"sweet",name:"Sweet & warm",ic:"◆",tint:"#f0d79a"}
-];
-const PRODUCTS=[
-  {name:"Fresh collection",fam:"fresh",type:"Perfume",desc:"Clean, cool notes for hot days and long commutes.",img:"",price:""},
-  {name:"White musk collection",fam:"musk",type:"Attar",desc:"Close, soft and clean. Easy to wear all day.",img:"",price:""},
-  {name:"Oud collection",fam:"oud",type:"Attar",desc:"Deep woody attars for Jumu'ah and evenings.",img:"",price:""},
-  {name:"Rose collection",fam:"floral",type:"Attar",desc:"Classic rose and floral blends, gentle on skin.",img:"",price:""},
-  {name:"Amber & vanilla collection",fam:"sweet",type:"Perfume",desc:"Warm, cosy sweetness for winter evenings.",img:"",price:""}
-];
 const WA="919272527913";
-const famsEl=document.getElementById("fams"),grid=document.getElementById("grid");
-let current="all";
-function count(id){return id==="all"?PRODUCTS.length:PRODUCTS.filter(p=>p.fam===id).length}
-function renderFams(){
-  famsEl.innerHTML=FAMILIES.map(f=>`<button class="fam" type="button" data-id="${f.id}" aria-pressed="${f.id===current}"><span class="ic">${f.ic}</span>${f.name}<em>${count(f.id)}</em></button>`).join("");
-}
-function renderGrid(){
-  const fam=FAMILIES.find(f=>f.id===current);
-  document.getElementById("shelfTitle").textContent=fam.name;
-  const list=current==="all"?PRODUCTS:PRODUCTS.filter(p=>p.fam===current);
-  grid.innerHTML=list.length?list.map(p=>{
-    const t=(FAMILIES.find(f=>f.id===p.fam)||{}).tint||"#cfe7b5";
-    const msg=encodeURIComponent(`Hi ScentKart, please share price and sizes for: ${p.name}`);
-    return `<article class="card glass"><div class="bottle-box">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<div class="bottle" style="--tint:${t}"></div>`}</div>
-      <h3>${p.name}</h3><p>${p.desc}</p>
-      <div class="row"><span class="tag">${p.type}${p.price?" · "+p.price:""}</span><a class="ask" href="https://wa.me/${WA}?text=${msg}" target="_blank" rel="noopener">Ask on WhatsApp</a></div></article>`;
-  }).join(""):`<p class="empty">New bottles in this family are coming soon. Ask us on WhatsApp.</p>`;
-}
-famsEl.addEventListener("click",e=>{const b=e.target.closest(".fam");if(!b)return;current=b.dataset.id;renderFams();renderGrid();if(innerWidth<860)document.getElementById("shelf").scrollIntoView()});
-renderFams();renderGrid();
-document.getElementById("yr").textContent=new Date().getFullYear();
-document.getElementById("copyBtn").addEventListener("click",async e=>{
-  try{await navigator.clipboard.writeText("+919272527913");e.target.textContent="Copied"}
-  catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById("num"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.target.textContent="Selected – press copy"}
-});
-</script>
+/* families: products are matched by their Category (set in Shop Admin): fresh, musk, oud, rose/floral, sweet/amber */
+const FAM=[
+  {id:"all",name:"All",ic:"✦",t:"#b4ec7c"},
+  {id:"fresh",name:"Fresh & aquatic",ic:"≈",t:"#8fd3e2",k:/fresh|aqua|citrus|marine/i},
+  {id:"musk",name:"Soft musk",ic:"○",t:"#e3daf0",k:/musk|powder|clean/i},
+  {id:"oud",name:"Oud & woody",ic:"▲",t:"#c9935a",k:/oud|wood|sandal|smok/i},
+  {id:"floral",name:"Rose & floral",ic:"❀",t:"#f2a9b8",k:/rose|flor|jasmin|mogra/i},
+  {id:"sweet",name:"Sweet & warm",ic:"◆",t:"#f0cf7a",k:/sweet|amber|vanil|gourmand|warm/i}];
+const famOf=it=>(FAM.find(f=>f.k&&f.k.test((it.cat||"")+" "+(it.tag||"")+" "+it.name))||{id:"other",t:"#b4ec7c"});
+const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rs=v=>"₹"+(+v||0).toLocaleString("en-IN");
+let cur="all",items=[];
 
+function drawFams(){document.getElementById("fams").innerHTML=FAM.map(f=>{const n=f.id==="all"?items.length:items.filter(i=>famOf(i).id===f.id).length;
+  return `<button class="key" type="button" data-f="${f.id}" aria-pressed="${f.id===cur}" style="--t:${f.t}"><span class="ic">${f.ic}</span>${f.name}<em>${n}</em></button>`}).join("")}
+function drawGrid(){
+  const f=FAM.find(x=>x.id===cur);document.getElementById("shelfTitle").textContent=cur==="all"?"All fragrances":f.name;
+  const list=cur==="all"?items:items.filter(i=>famOf(i).id===cur);
+  document.getElementById("grid").innerHTML=list.length?list.map(it=>{const t=famOf(it).t,live=!it.demo&&+it.price>0;
+    const wa=`https://wa.me/${WA}?text=${encodeURIComponent("Hi ScentKart, please share price and sizes for: "+it.name)}`;
+    const buy=live?(it.stock===0?`<button class="b3 dark sm" disabled>Sold out</button>`:`<button class="b3 sm" type="button" data-shop-add="${H(it.id)}">Add to cart</button>`)
+      :`<a class="b3 dark sm" href="${wa}" target="_blank" rel="noopener">Ask on WhatsApp</a>`;
+    return `<article class="pc glass" style="--t:${t}"><div class="media">${it.img?`<img src="${H(it.img)}" alt="${H(it.name)}" loading="lazy">`:`<span class="mini"></span>`}</div>
+      ${it.tag?`<span class="pill">${H(it.tag)}</span>`:""}<span class="meta">${H([it.cat,it.size].filter(Boolean).join(" · "))}</span>
+      <h3>${H(it.name)}</h3>${it.desc?`<p>${H(it.desc)}</p>`:""}
+      <div class="row"><span class="price">${live?rs(it.price)+(+it.mrp>+it.price?`<s>${rs(it.mrp)}</s>`:""):"Ask price"}</span>${buy}</div></article>`}).join("")
+    :`<p class="empty">New bottles in this family are coming soon. <a href="https://wa.me/${WA}" target="_blank" rel="noopener">Ask us on WhatsApp</a>.</p>`;
+  tiltAll();
+}
+document.getElementById("fams").addEventListener("click",e=>{const b=e.target.closest(".key");if(!b)return;cur=b.dataset.f;drawFams();drawGrid()});
+document.addEventListener("shop:items",e=>{items=e.detail||[];drawFams();drawGrid()});
+
+/* volumetric bottle: 14 glass slices, front face carries the label */
+(function(){const b=document.getElementById("bottle");let h="";const N=14;
+  for(let i=0;i<N;i++){const z=(i-(N-1)/2)*3.2;h+=`<div class="slice${i===N-1||i===0?" face":""}" style="transform:translateZ(${z}px)${i===0?" rotateY(180deg)":""}">${i===N-1?'<div class="label">SCENTKART<small>EAU DE PARFUM</small></div>':""}</div>`}
+  const box=c=>[0,90,180,270].map(r=>`<i style="transform:rotateY(${r}deg) translateZ(var(--hz))"></i>`).join("");
+  h+=`<div class="neck" style="--hz:10px">${box()}</div><div class="cap" style="--hz:18px">${box()}</div>`;b.innerHTML=h})();
+
+/* pointer tilt for cards and the stage */
+const fine=matchMedia("(pointer:fine)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
+function tiltAll(){if(!fine)return;document.querySelectorAll(".pc").forEach(c=>{
+  c.onpointermove=e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`rotateY(${x*14}deg) rotateX(${-y*12}deg) translateY(-6px)`};
+  c.onpointerleave=()=>c.style.transform=""})}
+if(fine){const st=document.getElementById("stage");st.addEventListener("pointermove",e=>{const r=st.getBoundingClientRect();st.style.perspectiveOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`})}
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+
+document.getElementById("yr").textContent=new Date().getFullYear();
+document.getElementById("copyBtn").addEventListener("click",async e=>{try{await navigator.clipboard.writeText("+919272527913");e.target.textContent="Copied ✓"}
+  catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById("num"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.target.textContent="Selected"}});
+
+Shop.init({brand:"scentkart",name:"ScentKart",whatsapp:WA,color:"#b4ec7c",fab:false,
+  fallbackItems:[
+    {id:"d1",name:"Fresh collection",cat:"Fresh · Perfume",desc:"Clean, cool notes for hot days and long commutes.",kind:"product"},
+    {id:"d2",name:"White musk collection",cat:"Musk · Attar",desc:"Close, soft and clean. Easy to wear all day.",kind:"product"},
+    {id:"d3",name:"Oud collection",cat:"Oud · Attar",desc:"Deep woody attars for Jumu'ah and evenings.",kind:"product"},
+    {id:"d4",name:"Rose collection",cat:"Rose · Attar",desc:"Classic rose and floral blends, gentle on skin.",kind:"product"},
+    {id:"d5",name:"Amber & vanilla collection",cat:"Amber · Perfume",desc:"Warm, cosy sweetness for winter evenings.",kind:"product"}]});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
+</script>
 </body>
 </html>
