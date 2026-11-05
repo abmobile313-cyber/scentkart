@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ScentKart</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="ScentKart – everyday perfumes and attars. Fragrance to the soul.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: blurred "vanity shelf" backdrop with frosted-glass panels floating over it (scent finder + product shelf), then one dark band for the brand promise. */
+:root{
+  --bg:#e9ebe6; --bg2:#dfe3db; --ink:#16181a; --muted:#5d625c;
+  --glass:rgba(255,255,255,.55); --glass-line:rgba(255,255,255,.75); --shadow:rgba(30,40,25,.14);
+  --leaf:#9bd36a; --leaf-ink:#24410e; --dark:#0f1110; --dark-ink:#eef1ea; --dark-muted:#8f978c;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141714; --bg2:#1b1f1b; --ink:#eef1ea; --muted:#a2a99f;
+  --glass:rgba(40,46,40,.55); --glass-line:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.45);
+  --leaf:#a6dc76; --leaf-ink:#16290a; --dark:#090a09; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141714; --bg2:#1b1f1b; --ink:#eef1ea; --muted:#a2a99f;
+  --glass:rgba(40,46,40,.55); --glass-line:rgba(255,255,255,.12); --shadow:rgba(0,0,0,.45);
+  --leaf:#a6dc76; --leaf-ink:#16290a; --dark:#090a09; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.02em}
+a{color:inherit}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* backdrop: soft blurred blobs like a shelf seen out of focus */
+.scene{position:relative;isolation:isolate;overflow:hidden}
+.scene::before,.scene::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.75}
+.scene::before{width:42vw;height:42vw;left:-8vw;top:8vh;background:var(--bg2)}
+.scene::after{width:30vw;height:30vw;right:4vw;top:22vh;background:var(--leaf);opacity:.35}
+.glass{background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);box-shadow:0 30px 60px -30px var(--shadow);border-radius:26px}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;padding-block:14px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 18px;border-radius:999px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.15rem;text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:10px;background:var(--ink);display:grid;place-items:center}
+.logo i::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--leaf)}
+.nav nav{display:flex;gap:4px}
+.nav nav a{padding:8px 14px;border-radius:999px;text-decoration:none;font-size:.92rem;color:var(--muted)}
+.nav nav a:hover,.nav nav a:focus-visible{background:var(--glass-line);color:var(--ink);outline:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;font-size:.92rem;border:0;cursor:pointer}
+.btn .dot{width:8px;height:8px;border-radius:50%;background:var(--leaf)}
+.btn:focus-visible{outline:2px solid var(--leaf);outline-offset:3px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-block:48px 70px}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5.2rem)}
+.hero h1 span{color:var(--muted)}
+.hero p{max-width:44ch;color:var(--muted);font-size:1.08rem;margin:18px 0 26px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--glass-line);background:var(--glass);font-size:.82rem}
+
+/* the scent finder panel (signature element) */
+.finder{padding:14px;width:min(100%,380px);justify-self:center;transform:rotate(-1.5deg)}
+.finder-top{display:flex;align-items:center;gap:10px;padding:6px 6px 12px}
+.finder-top b{font-family:var(--display);font-size:1.05rem}
+.finder-top small{display:block;color:var(--muted);font-size:.72rem}
+.search{display:flex;align-items:center;gap:8px;margin:0 4px 10px;padding:9px 12px;border-radius:14px;background:var(--glass-line);color:var(--muted);font-size:.85rem}
+.fam{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border-radius:14px;border:0;background:none;color:var(--ink);font:inherit;font-size:.95rem;cursor:pointer;text-align:left}
+.fam em{margin-left:auto;font-style:normal;font-size:.75rem;color:var(--muted)}
+.fam .ic{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:var(--glass-line);font-size:.8rem}
+.fam:hover{background:var(--glass-line)}
+.fam[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.fam[aria-pressed="true"] em{color:var(--dark-muted)}
+.fam[aria-pressed="true"] .ic{background:var(--leaf);color:var(--leaf-ink)}
+.fam:focus-visible{outline:2px solid var(--leaf)}
+.note{margin:10px 4px 2px;padding:12px;border-radius:16px;background:var(--dark);color:var(--dark-ink);font-size:.85rem}
+.note b{font-family:var(--display);font-size:1.6rem;display:block;line-height:1.1}
+.note small{color:var(--dark-muted)}
+
+/* shelf */
+section{padding-block:70px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(2rem,4vw,3rem)}
+.sec-head p{max-width:42ch;color:var(--muted);margin:0}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}
+.card{padding:16px;display:flex;flex-direction:column;gap:12px;transition:transform .25s ease}
+.card:hover{transform:translateY(-4px)}
+.bottle-box{aspect-ratio:4/5;max-width:100%;border-radius:18px;background:linear-gradient(160deg,var(--glass-line),transparent 60%),var(--bg2);display:grid;place-items:center;position:relative;overflow:hidden}
+.bottle-box img{width:100%;height:100%;object-fit:cover}
+.bottle{width:38%;aspect-ratio:1/1.55;border-radius:22% 22% 18% 18%/14% 14% 10% 10%;background:linear-gradient(115deg,rgba(255,255,255,.75),rgba(255,255,255,.15) 45%,var(--tint,#cfe7b5) 46%,var(--tint,#cfe7b5));box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 18px 30px -12px var(--shadow);position:relative;margin-top:14%}
+.bottle::before{content:"";position:absolute;left:50%;top:-22%;width:34%;height:20%;transform:translateX(-50%);border-radius:5px;background:var(--ink)}
+.card h3{font-size:1.15rem}
+.card p{margin:0;color:var(--muted);font-size:.88rem}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}
+.tag{font-size:.75rem;padding:4px 10px;border-radius:999px;background:var(--glass-line)}
+.ask{font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid currentColor}
+.empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted)}
+
+/* dark promise band */
+.band{background:var(--dark);color:var(--dark-ink)}
+.band .eyebrow{color:var(--dark-muted)}
+.band h2{font-size:clamp(2.2rem,5vw,4rem);margin:12px 0 30px}
+.band h2 span{color:var(--dark-muted)}
+.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;border-top:1px solid #2a2e29;padding-top:28px}
+.promise b{font-family:var(--display);font-size:1.15rem;display:block;margin-bottom:6px}
+.promise p{margin:0;color:var(--dark-muted);font-size:.93rem}
+
+/* how to order */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:22px}
+.step i{font-style:normal;font-family:var(--display);font-size:.8rem;color:var(--muted)}
+.step b{display:block;font-family:var(--display);font-size:1.2rem;margin:6px 0}
+.step p{margin:0;color:var(--muted);font-size:.93rem}
+.contact{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:22px 24px;margin-top:22px}
+.contact .num{font-family:var(--display);font-size:1.4rem;user-select:all}
+.copy{background:none;border:1px solid var(--muted);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:.85rem;cursor:pointer}
+footer{padding-block:34px;color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .big{font-family:var(--display);font-weight:700;font-size:clamp(3rem,12vw,8rem);color:var(--ink);line-height:.9;letter-spacing:-.04em;width:100%}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-block:24px 40px}
+  .finder{transform:none}
+  .promise,.steps{grid-template-columns:1fr}
+  .nav nav{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+
+<div class="scene">
+<header><div class="wrap"><div class="nav glass">
+  <a class="logo" href="#top"><i></i>ScentKart</a>
+  <nav aria-label="Sections"><a href="#shelf">Shop</a><a href="#why">Why ScentKart</a><a href="#order">How to order</a></nav>
+  <a class="btn" href="https://wa.me/919272527913?text=Hi%20ScentKart%2C%20I%20want%20to%20order" target="_blank" rel="noopener"><span class="dot"></span>Order on WhatsApp</a>
+</div></div></header>
+
+<main id="top">
+<div class="wrap hero">
+  <div>
+    <p class="eyebrow">ScentKart · Everyday fragrance</p>
+    <h1>Fragrance to the soul. <span>Every single day.</span></h1>
+    <p>Perfumes and attars made for daily wear: to the office, to the masjid, out with friends. Long-lasting and easy on the pocket.</p>
+    <div class="chips"><span class="chip">Perfumes</span><span class="chip">Attars</span><span class="chip">Daily wear</span></div>
+    <a class="btn" href="#shelf"><span class="dot"></span>Find your scent</a>
+  </div>
+
+  <div class="finder glass" aria-label="Scent finder">
+    <div class="finder-top"><span class="logo"><i></i></span><div><b>Scent finder</b><small>Pick a mood, see the shelf</small></div></div>
+    <div class="search" aria-hidden="true">⌕ &nbsp;Search oud, musk, rose…</div>
+    <div id="fams"></div>
+    <div class="note"><b id="noteNum">25+</b><small id="noteTxt">fragrances on the shelf, perfumes and attars together</small></div>
+  </div>
+</div>
+
+<section id="shelf"><div class="wrap">
+  <div class="sec-head">
+    <div><p class="eyebrow">The shelf</p><h2 id="shelfTitle">All fragrances</h2></div>
+    <p>Tap "Ask on WhatsApp" on any bottle. We reply with today's price, sizes and a quick sniff guide.</p>
+  </div>
+  <div class="shelf" id="grid"></div>
+</div></section>
+</main>
+</div>
+
+<section class="band" id="why"><div class="wrap">
+  <p class="eyebrow">Why ScentKart</p>
+  <h2>Smell good daily. <span>Without the luxury price tag.</span></h2>
+  <div class="promise">
+    <div><b>Made for daily wear</b><p>Scents that sit close and last through a working day, not just the first hour.</p></div>
+    <div><b>Attar and perfume, both</b><p>Oil-based attars for those who prefer them, and sprays for a quick, fresh finish.</p></div>
+    <div><b>Order in one chat</b><p>No checkout forms. Message us, choose your bottle, and we take it from there.</p></div>
+  </div>
+</div></section>
+
+<section id="order"><div class="wrap">
+  <div class="sec-head"><div><p class="eyebrow">How to order</p><h2>Three messages, one parcel.</h2></div></div>
+  <div class="steps">
+    <div class="step glass"><i>Step 1</i><b>Say hi on WhatsApp</b><p>Tell us the scent or mood you like, or send a photo of a bottle you loved.</p></div>
+    <div class="step glass"><i>Step 2</i><b>Pick size and pay</b><p>We share today's prices, sizes and how to pay.</p></div>
+    <div class="step glass"><i>Step 3</i><b>It reaches your door</b><p>We pack it and send it to your address.</p></div>
+  </div>
+  <div class="contact glass">
+    <div><p class="eyebrow">WhatsApp &amp; calls</p><span class="num" id="num">+91 92725 27913</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="copy" id="copyBtn" type="button">Copy number</button>
+      <a class="btn" href="https://wa.me/919272527913?text=Hi%20ScentKart" target="_blank" rel="noopener"><span class="dot"></span>Open WhatsApp</a>
+    </div>
+  </div>
+  <p style="color:var(--muted);font-size:.9rem;margin-top:14px">Email: <span style="user-select:all">scentkart@gmail.com</span></p>
+</div></section>
+
+<div class="wrap"><footer>
+  <div class="big">ScentKart</div>
+  <span>Fragrance to the soul · scentkart.store</span><span>© <span id="yr"></span> ScentKart</span>
+</footer></div>
+
+<script>
+/* ===== EDIT YOUR PRODUCTS HERE =====
+   name: bottle name · fam: one of the family ids below · type: "Perfume" or "Attar"
+   desc: one short line · img: photo file name (leave "" to show the drawn bottle) · price: "" shows "Ask price" */
+const FAMILIES=[
+  {id:"all",name:"All fragrances",ic:"✦"},
+  {id:"fresh",name:"Fresh & aquatic",ic:"≈",tint:"#bfe3e6"},
+  {id:"musk",name:"Soft musk",ic:"○",tint:"#ece6f2"},
+  {id:"oud",name:"Oud & woody",ic:"▲",tint:"#c9a27a"},
+  {id:"floral",name:"Rose & floral",ic:"❀",tint:"#f2c6cf"},
+  {id:"sweet",name:"Sweet & warm",ic:"◆",tint:"#f0d79a"}
+];
+const PRODUCTS=[
+  {name:"Fresh collection",fam:"fresh",type:"Perfume",desc:"Clean, cool notes for hot days and long commutes.",img:"",price:""},
+  {name:"White musk collection",fam:"musk",type:"Attar",desc:"Close, soft and clean. Easy to wear all day.",img:"",price:""},
+  {name:"Oud collection",fam:"oud",type:"Attar",desc:"Deep woody attars for Jumu'ah and evenings.",img:"",price:""},
+  {name:"Rose collection",fam:"floral",type:"Attar",desc:"Classic rose and floral blends, gentle on skin.",img:"",price:""},
+  {name:"Amber & vanilla collection",fam:"sweet",type:"Perfume",desc:"Warm, cosy sweetness for winter evenings.",img:"",price:""}
+];
+const WA="919272527913";
+const famsEl=document.getElementById("fams"),grid=document.getElementById("grid");
+let current="all";
+function count(id){return id==="all"?PRODUCTS.length:PRODUCTS.filter(p=>p.fam===id).length}
+function renderFams(){
+  famsEl.innerHTML=FAMILIES.map(f=>`<button class="fam" type="button" data-id="${f.id}" aria-pressed="${f.id===current}"><span class="ic">${f.ic}</span>${f.name}<em>${count(f.id)}</em></button>`).join("");
+}
+function renderGrid(){
+  const fam=FAMILIES.find(f=>f.id===current);
+  document.getElementById("shelfTitle").textContent=fam.name;
+  const list=current==="all"?PRODUCTS:PRODUCTS.filter(p=>p.fam===current);
+  grid.innerHTML=list.length?list.map(p=>{
+    const t=(FAMILIES.find(f=>f.id===p.fam)||{}).tint||"#cfe7b5";
+    const msg=encodeURIComponent(`Hi ScentKart, please share price and sizes for: ${p.name}`);
+    return `<article class="card glass"><div class="bottle-box">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<div class="bottle" style="--tint:${t}"></div>`}</div>
+      <h3>${p.name}</h3><p>${p.desc}</p>
+      <div class="row"><span class="tag">${p.type}${p.price?" · "+p.price:""}</span><a class="ask" href="https://wa.me/${WA}?text=${msg}" target="_blank" rel="noopener">Ask on WhatsApp</a></div></article>`;
+  }).join(""):`<p class="empty">New bottles in this family are coming soon. Ask us on WhatsApp.</p>`;
+}
+famsEl.addEventListener("click",e=>{const b=e.target.closest(".fam");if(!b)return;current=b.dataset.id;renderFams();renderGrid();if(innerWidth<860)document.getElementById("shelf").scrollIntoView()});
+renderFams();renderGrid();
+document.getElementById("yr").textContent=new Date().getFullYear();
+document.getElementById("copyBtn").addEventListener("click",async e=>{
+  try{await navigator.clipboard.writeText("+919272527913");e.target.textContent="Copied"}
+  catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById("num"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.target.textContent="Selected – press copy"}
+});
+</script>
+
+</body>
+</html>
